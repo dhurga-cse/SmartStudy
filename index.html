@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StudyMate AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>📘 StudyMate AI</h1>
+  <p class="subtitle">AI-Powered Personalized Study Planner</p>
+
+  <div class="card">
+    <label>Subject</label>
+    <input id="subject" placeholder="Java">
+
+    <label>Difficulty</label>
+    <select id="level">
+      <option>Easy</option>
+      <option>Medium</option>
+      <option>Hard</option>
+    </select>
+
+    <button onclick="generate()">Generate Study Plan</button>
+  </div>
+
+  <div class="output-card">
+    <h3>Generated Study Plan</h3>
+    <pre id="output">Your AI plan will appear here...</pre>
+  </div>
+</div>
+
+<script>
+async function generate() {
+  const subject = document.getElementById("subject").value;
+  const level = document.getElementById("level").value;
+  const output = document.getElementById("output");
+
+  output.innerText = "⏳ Generating study plan...";
+
+  const res = await fetch("http://localhost:3000/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      prompt: `Create a ${level} study plan for ${subject}`
+    })
+  });
+
+  const data = await res.json();
+  output.innerText = data.output;
+}
+</script>
+
+</body>
+</html>
